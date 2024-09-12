@@ -3,63 +3,54 @@ package fintech.com.swingproject;
 import javax.swing.*;
 
 import fintech.com.swingproject.db.DBCon;
-import fintech.com.swingproject.pages.SignUpPage;
-import fintech.com.swingproject.pages.Page2;
-import fintech.com.swingproject.pages.Page3;
+import fintech.com.swingproject.pages.EmployeeListPage;
+import fintech.com.swingproject.pages.JoinPage;
+import fintech.com.swingproject.pages.LoginPage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * 초기세팅: 메인페이지 + 페이지1,2,3 + 회원가입페이지 + JDBC 세팅
+ * 초기세팅: 로그인 + 회원가입 + 조회페이지(CRUD)
  */
 public class MainPage {
-
 	public static void main(String[] args) {
-		
-		// 디비 설정
+
+		// 디비 연결
 		DBCon dbObj = new DBCon();
-		
+
 		JFrame frame = new JFrame("어드민 시스템");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
+		frame.setSize(700, 460);
 
-		// 레이아웃
 		CardLayout cardLayout = new CardLayout();
 		JPanel mainPanel = new JPanel(cardLayout);
 
-		// 초기 페이지 세팅
-		SignUpPage signUpPage = new SignUpPage(cardLayout, mainPanel);
-		Page2 page2 = new Page2(cardLayout, mainPanel);
-		Page3 page3 = new Page3(cardLayout, mainPanel);
+		LoginPage loginPage = new LoginPage(cardLayout, mainPanel);
+		JoinPage joinPage = new JoinPage(cardLayout, mainPanel);
+		EmployeeListPage listPage = new EmployeeListPage(cardLayout, mainPanel);
 
-		mainPanel.add(signUpPage, "회원가입");
-		mainPanel.add(page2, "페이지2");
-		mainPanel.add(page3, "페이지3");
-		
-		
-		// 메뉴 바
+//		mainPanel.add(signUpPage, "회원가입");
+		mainPanel.add(loginPage, "로그인");
+		mainPanel.add(joinPage, "회원가입");
+		mainPanel.add(listPage, "조회");
+
 		JMenuBar menuBar = new JMenuBar();
 
-		// 회원가입
-		JMenu menu1 = new JMenu("회원가입");
-		JMenuItem menuItem1 = new JMenuItem("회원가입 페이지 이동");
+		JMenu menu1 = new JMenu("로그인");
+		JMenuItem menuItem2 = new JMenuItem("로그인 이동");
+		menuItem2.addActionListener(e -> cardLayout.show(mainPanel, "로그인"));
+		menu1.add(menuItem2);
+
+		JMenu menu2 = new JMenu("회원가입");
+		JMenuItem menuItem1 = new JMenuItem("회원가입 이동");
 		menuItem1.addActionListener(e -> cardLayout.show(mainPanel, "회원가입"));
-		menu1.add(menuItem1);
-		
-		
+		menu2.add(menuItem1);
 
-		// 메뉴2
-		JMenu menu2 = new JMenu("메뉴 2");
-		JMenuItem menuItem2 = new JMenuItem("페이지2 이동");
-		menuItem2.addActionListener(e -> cardLayout.show(mainPanel, "페이지2"));
-		menu2.add(menuItem2);
-
-		// 메뉴 3
-		JMenu menu3 = new JMenu("메뉴 3");
-		JMenuItem menuItem3 = new JMenuItem("페이지3 이동");
-		menuItem3.addActionListener(e -> cardLayout.show(mainPanel, "페이지3"));
+		JMenu menu3 = new JMenu("조회");
+		JMenuItem menuItem3 = new JMenuItem("조회 이동");
+		menuItem3.addActionListener(e -> cardLayout.show(mainPanel, "조회"));
 		menu3.add(menuItem3);
 
 		menuBar.add(menu1);
@@ -67,8 +58,8 @@ public class MainPage {
 		menuBar.add(menu3);
 
 		frame.setJMenuBar(menuBar);
-		frame.add(mainPanel);
-
+		frame.add(mainPanel, BorderLayout.CENTER);
 		frame.setVisible(true);
+
 	}
 }
