@@ -3,6 +3,7 @@ package fintech.com.swingproject;
 import javax.swing.*;
 
 import fintech.com.swingproject.db.DBCon;
+import fintech.com.swingproject.pages.EmployeeAdd;
 import fintech.com.swingproject.pages.EmployeeListPage;
 import fintech.com.swingproject.pages.JoinPage;
 import fintech.com.swingproject.pages.LoginPage;
@@ -30,11 +31,13 @@ public class MainPage {
 		LoginPage loginPage = new LoginPage(cardLayout, mainPanel);
 		JoinPage joinPage = new JoinPage(cardLayout, mainPanel);
 		EmployeeListPage listPage = new EmployeeListPage(cardLayout, mainPanel);
+		EmployeeAdd addPage = new EmployeeAdd(cardLayout, listPage);
 
 //		mainPanel.add(signUpPage, "회원가입");
 		mainPanel.add(loginPage, "로그인");
 		mainPanel.add(joinPage, "회원가입");
 		mainPanel.add(listPage, "조회");
+		mainPanel.add(addPage, "추가");
 
 		JMenuBar menuBar = new JMenuBar();
 

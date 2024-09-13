@@ -2,6 +2,9 @@ package fintech.com.swingproject.pages;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.table.DefaultTableModel;
 
 public class EmployeeListPage extends JPanel {
@@ -9,9 +12,9 @@ public class EmployeeListPage extends JPanel {
 	public EmployeeListPage(CardLayout cardLayout, JPanel mainPanel) {
 		// 프로젝트 통일성을 위해 구조 수정 (JFrame 구조를 JPanel로 바꾸고, CardLayout과 mainPanel을 사용하여 페이지 전환이
 		// 가능하게 만듦)
-//		JFrame frame = new JFrame("직원 리스트");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setSize(800, 600);
+		//		JFrame frame = new JFrame("직원 리스트");
+		//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//		frame.setSize(800, 600);
 
 		// 패널 생성
 		setLayout(new BorderLayout());
@@ -43,5 +46,30 @@ public class EmployeeListPage extends JPanel {
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.WEST);
 		add(searchField, BorderLayout.NORTH);
+
+		// "추가" 버튼 클릭 이벤트
+		addButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(mainPanel, "추가");
+				// new EmployeeAdd(); // 새로운 직원 추가 창 열기
+			}
+		});
+		
+		setVisible(true);
+		
+	}
+
+	private static DefaultTableModel model;
+
+	public static void addEmployee(
+			String name,
+			String department,
+			String position,
+			String id,
+			String email,
+			String phone,
+			String status) {
+		model.addRow(new Object[] {name, department, position, id, email, phone, status});
 	}
 }
