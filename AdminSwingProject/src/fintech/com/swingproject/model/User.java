@@ -8,15 +8,32 @@ public class User {
 	private String password;
 	private String department;
 	private String position;
-	private String id; // 삭제 예정: username 을 조회 할때 ID 로 쓸거기 때문에
 	private String email;
 	private String phone;
-	private String status;
+	private String status; // boolean 으로 변환 예정: 체크박스로 표현 예정
+	
+//	 public User(String username, String password, String department, String position, String email, String phone, String status) {
+//		this.username = username;
+//		this.password = password;
 
-	public User(String username, String password, String department) {
+//	}
+
+	public User(String username, String password, String department, String position, String email, String phone,
+			String status) {
 		this.username = username;
 		this.password = password;
+		this.department = department;
+		this.position = position;
+		this.email = email;
+		this.phone = phone;
+		this.status = status;
+	}
 
+	public User(String username, String password, String phone, String department) {
+		this.username = username;
+		this.password = password;
+		this.phone = phone;
+		this.department = department;
 	}
 
 	public String getUsername() {
@@ -49,14 +66,6 @@ public class User {
 
 	public void setPosition(String position) {
 		this.position = position;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getEmail() {

@@ -18,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class EmployeeAdd extends JPanel {
 	private JTextField nameField;
+	private JTextField passwordField;
 	private JTextField departmentField;
 	private JTextField positionField;
-	private JTextField idField;
 	private JTextField emailField;
 	private JTextField phoneField;
 	private JTextField statusField;
@@ -43,9 +43,9 @@ public class EmployeeAdd extends JPanel {
 
 		// 레이블과 입력 필드를 패널에 추가
 		nameField = new JTextField();
+		passwordField = new JTextField();
 		departmentField = new JTextField();
 		positionField = new JTextField();
-		idField = new JTextField();
 		emailField = new JTextField();
 		phoneField = new JTextField();
 		statusField = new JTextField();
@@ -53,12 +53,12 @@ public class EmployeeAdd extends JPanel {
 		// 레이블과 입력 필드를 패널에 추가
 		inputPanel.add(new JLabel("이름 : "));
 		inputPanel.add(nameField);
+		inputPanel.add(new JLabel("비밀번호 : "));
+		inputPanel.add(passwordField);
 		inputPanel.add(new JLabel("소속 : "));
 		inputPanel.add(departmentField);
 		inputPanel.add(new JLabel("직급 : "));
 		inputPanel.add(positionField);
-		inputPanel.add(new JLabel("아이디 : "));
-		inputPanel.add(idField);
 		inputPanel.add(new JLabel("이메일 : "));
 //		inputPanel.add(new JLabel("이메일 : "));
 		inputPanel.add(emailField);
@@ -92,15 +92,15 @@ public class EmployeeAdd extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// 입력 필드에서 데이터 가져오기
 				String name = nameField.getText();
+				String password = passwordField.getText();
 				String department = departmentField.getText();
 				String position = positionField.getText();
-				String id = idField.getText();
 				String email = emailField.getText();
 				String phone = phoneField.getText();
 				String status = statusField.getText();
 				
 				// 직원 정보를 EmployeeListPage에 추가
-				EmployeeListPage.addEmployee(name, department, position, id, email, phone, status);
+				EmployeeListPage.addEmployee(name, password, department, position, email, phone, status);
 				clearInputFields();
 			}
 		});
@@ -123,7 +123,7 @@ public class EmployeeAdd extends JPanel {
 		nameField.setText("");
 		departmentField.setText("");
 		positionField.setText("");
-		idField.setText("");
+		passwordField.setText("");
 		emailField.setText("");
 		phoneField.setText("");
 		statusField.setText("");
