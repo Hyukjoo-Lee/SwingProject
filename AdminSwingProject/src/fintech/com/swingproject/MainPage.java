@@ -20,6 +20,8 @@ public class MainPage {
 
 		// 디비 연결
 		DBCon dbObj = new DBCon();
+		// 유저 테이블 생성
+		dbObj.createUserTable();
 
 		JFrame frame = new JFrame("어드민 시스템");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
