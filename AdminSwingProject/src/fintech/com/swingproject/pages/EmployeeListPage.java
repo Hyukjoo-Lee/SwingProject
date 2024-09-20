@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 
 public class EmployeeListPage extends JPanel {
-
+	
+	private static DefaultTableModel model;
+	
 	public EmployeeListPage(CardLayout cardLayout, JPanel mainPanel) {
 		// 프로젝트 통일성을 위해 구조 수정 (JFrame 구조를 JPanel로 바꾸고, CardLayout과 mainPanel을 사용하여 페이지 전환이
 		// 가능하게 만듦)
@@ -35,7 +37,7 @@ public class EmployeeListPage extends JPanel {
 
 		// 테이블 생성 (이건 배웠는지 모르겠음)
 		String[] columnNames = { "이름", "소속", "직급", "아이디", "이메일", "전화번호", "상태" };
-		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		model = new DefaultTableModel(columnNames, 0);
 		JTable table = new JTable(model);
 
 		// 검색 필드
@@ -59,8 +61,6 @@ public class EmployeeListPage extends JPanel {
 		setVisible(true);
 		
 	}
-
-	private static DefaultTableModel model;
 
 	public static void addEmployee(
 			String name,
