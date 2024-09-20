@@ -23,7 +23,7 @@ public class EmployeeListPage extends JPanel {
 
 		// 버튼 패널
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(5, 1));
+		buttonPanel.setLayout(new GridLayout(4, 1));
 
 		JButton addButton = new JButton("추가");
 		JButton deleteButton = new JButton("삭제");

@@ -27,16 +27,16 @@ public class EmployeeAdd extends JPanel {
 
 	public EmployeeAdd(CardLayout cardLayout, JPanel mainJPanel) {
 		setLayout(new BorderLayout());
-		initializeComponents();
+		initializeComponents(cardLayout, mainJPanel);
 		setVisible(true);
 	}
 
-	private void initializeComponents() {
-		add(createInputPanel(), BorderLayout.NORTH);
-		//add(createTablePanel(), BorderLayout.CENTER);
-		add(createButtonPanel(), BorderLayout.SOUTH);
-	}
-
+    private void initializeComponents(CardLayout cardLayout, JPanel mainJPanel) {
+        add(createInputPanel(), BorderLayout.NORTH);
+      //add(createTablePanel(), BorderLayout.CENTER);
+        add(createButtonPanel(cardLayout, mainJPanel), BorderLayout.SOUTH);
+    }
+    
 	// 입력 필드를 포함하는 패널 생성
 	private JPanel createInputPanel() {
 		JPanel inputPanel = new JPanel(new GridLayout(7,2));
@@ -81,10 +81,11 @@ public class EmployeeAdd extends JPanel {
 	*/
 
 	// 버튼을 포함하는 패널 생성
-	private JPanel createButtonPanel() {
+	 private JPanel createButtonPanel(CardLayout cardLayout, JPanel mainJPanel) {
 		JPanel buttonPanel = new JPanel();
 		JButton saveButton = new JButton("저장");	
-
+		JButton exitButton = new JButton("나가기");
+		
 		// 버튼 클릭 시 동작 정의
 		saveButton.addActionListener(new ActionListener() {
 			@Override
@@ -104,7 +105,16 @@ public class EmployeeAdd extends JPanel {
 			}
 		});
 		
+        // 나가기 버튼 클릭 시 동작 정의
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainJPanel, "조회"); 
+            }
+        });
+		
 		buttonPanel.add(saveButton);
+		buttonPanel.add(exitButton);
 		return buttonPanel;
 	}
 

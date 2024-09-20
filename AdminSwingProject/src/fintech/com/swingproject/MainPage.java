@@ -31,7 +31,7 @@ public class MainPage {
 		LoginPage loginPage = new LoginPage(cardLayout, mainPanel);
 		JoinPage joinPage = new JoinPage(cardLayout, mainPanel);
 		EmployeeListPage listPage = new EmployeeListPage(cardLayout, mainPanel);
-		EmployeeAdd addPage = new EmployeeAdd(cardLayout, listPage);
+		EmployeeAdd addPage = new EmployeeAdd(cardLayout, mainPanel);
 
 //		mainPanel.add(signUpPage, "회원가입");
 		mainPanel.add(loginPage, "로그인");
