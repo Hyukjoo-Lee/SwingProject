@@ -14,6 +14,9 @@ public class EmployeeListPage extends JPanel {
 
 	private static DefaultTableModel model;
 
+	//삭제관련 추가
+	private DBCon dbCon; // DB 연결 객체
+	
 	public EmployeeListPage(CardLayout cardLayout, JPanel mainPanel) {
 		// 프로젝트 통일성을 위해 구조 수정 (JFrame 구조를 JPanel로 바꾸고, CardLayout과 mainPanel을 사용하여 페이지
 		// 전환이
@@ -22,6 +25,10 @@ public class EmployeeListPage extends JPanel {
 		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// frame.setSize(800, 600);
 
+		//삭제관련 추가
+		this.dbCon = new DBCon(); // DB 객체 초기화
+	    setLayout(new BorderLayout());
+		
 		// 패널 생성
 		setLayout(new BorderLayout());
 
@@ -61,7 +68,25 @@ public class EmployeeListPage extends JPanel {
 				// new EmployeeAdd(); // 새로운 직원 추가 창 열기
 			}
 		});
-
+		 
+		// "삭제" 버튼 클릭 이벤트
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow >= 0) {
+                    String name = (String) model.getValueAt(selectedRow, 0); // 선택된 직원의 이름
+                    dbCon.deleteUser(name); // DB에서 삭제
+                    model.removeRow(selectedRow); // 테이블에서 행 제거
+                } else {
+                    JOptionPane.showMessageDialog(EmployeeListPage.this, "삭제할 직원을 선택하세요.");
+                }
+            }
+        });
+		
+		
+		
+		
 		setVisible(true);
 
 	}

@@ -173,6 +173,26 @@ public class DBCon {
 			close(conn, pstmt);
 		}
 	}
+	// 유저 정보를 삭제하는 메서드
+    public void deleteUser(String username) {
+        PreparedStatement pstmt = null;
+        try {
+            String sql = "DELETE FROM USERS WHERE USERNAME = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            int rowsAffected = pstmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("유저 삭제 완료: " + username);
+            } else {
+                System.out.println("유저가 존재하지 않거나 삭제되지 않았습니다: " + username);
+            }
+        } catch (SQLException e) {
+            System.out.println("유저 삭제 실패: " + e.getMessage());
+        } finally {
+            close(conn, pstmt);
+        }
+    }
 
 	// 연결 객체 가져오기
 	public static Connection getConnection() throws SQLException {
