@@ -1,15 +1,18 @@
 package fintech.com.swingproject;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import fintech.com.swingproject.db.DBCon;
 import fintech.com.swingproject.pages.EmployeeListPage;
 import fintech.com.swingproject.pages.JoinPage;
 import fintech.com.swingproject.pages.LoginPage;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * 초기세팅: 로그인 + 회원가입 + 조회페이지(CRUD)
@@ -30,12 +33,18 @@ public class MainPage {
 		LoginPage loginPage = new LoginPage(cardLayout, mainPanel);
 		JoinPage joinPage = new JoinPage(cardLayout, mainPanel);
 		EmployeeListPage listPage = new EmployeeListPage(cardLayout, mainPanel);
+	//	EmployeeAdd addPage = new EmployeeAdd(cardLayout, listPage);
 
-//		mainPanel.add(signUpPage, "회원가입");
+		
+		//		mainPanel.add(signUpPage, "회원가입");
 		mainPanel.add(loginPage, "로그인");
 		mainPanel.add(joinPage, "회원가입");
 		mainPanel.add(listPage, "조회");
-
+	//	mainPanel.add(addPage, "추가");
+		
+		
+		
+		
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu menu1 = new JMenu("로그인");

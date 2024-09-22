@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import fintech.com.swingproject.model.User;
+import fintech.com.swingproject.MainPage;
+import fintech.com.swingproject.pages.*;
 
 /**
  * DB Connection 클래스
@@ -17,7 +19,7 @@ public class DBCon {
 	// DB 연결 객체
 	private Connection conn = null;
 
-	private static final String URL = "jdbc:oracle:thin:@192.168.41.67:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private static final String USERNAME = "fin_team";
 	private static final String PASSWORD = "1234";
 
@@ -71,10 +73,12 @@ public class DBCon {
 	public void createUserTable() {
 
 	}
-	
+
 	// 해당 테이블이 없으면 생성하는 메서드 필요
 	private void createTableIfNotExists() throws SQLException {
 	}
+	
+
 
 	// 유저 정보 입력
 	public void insertUser(User user) {
@@ -94,9 +98,34 @@ public class DBCon {
 		}
 	}
 
-
-	// 연결 객체 가져오기
-	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+	// username을 기준으로 사용자 검색 메서드 
+	//유저 검색 메서드 (ResultSet을 반환)
+	public ResultSet searchUser(String username) throws SQLException {
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; // 쿼리 실행 결과를 담는 객체이다.
+		try {
+			// 유저 이름을 기준으로 검색하는 SQL 쿼리
+			String sql = "SELECT USERNAME FROM USERS WHERE USERNAME = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, username); // 첫 번째 ?(실제값) 자리에 유저 이름 설정
+			System.out.println(pstmt);
+			rs = pstmt.executeQuery(); // 쿼리 실행 후 결과를 ResultSet으로 받음
+			System.out.println(rs);
+		} catch (SQLException e) {
+			System.err.println("유저 검색 싶패:" + e.getMessage());
+			throw e;
+		}
+		return rs;
 	}
+	//리소스 해제 메서드 
+	public void close(ResultSet rs, PreparedStatement pstmt) {
+		try {
+			if(rs != null) rs.close();
+			if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
