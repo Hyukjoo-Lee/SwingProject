@@ -71,24 +71,113 @@ public class DBCon {
 
 	// 유저 테이블 생성하는 메소드: 초기에는 SQL manager 로 직접 테이블 생성 후 테스트 함 - 구현필요
 	public void createUserTable() {
+		String sql = "CREATE TABLE USERS (" + "USERNAME VARCHAR(50) NOT NULL PRIMARY KEY, "
+				+ "PASSWORD VARCHAR(255) NOT NULL, " + "DEPARTMENT VARCHAR(50), " + "POSITION VARCHAR(50), "
+				+ "ID NUMBER(20), " + "EMAIL VARCHAR(100), " + "PHONE VARCHAR(15), " + "STATUS CHAR(1)"+")";
+
+		String dropTableSql = "DROP TABLE USERS";
+		String checkTableSql = "SELECT COUNT(*) FROM user_tables WHERE table_name = 'USERS'";
+
+		try (Connection conn = getConnection()) {
+			// 테이블 존재 여부 확인
+			try (PreparedStatement checkStmt = conn.prepareStatement(checkTableSql);
+					ResultSet rs = checkStmt.executeQuery()) {
+
+				rs.next();
+				// 테이블이 존재하면 삭제
+				if (rs.getInt(1) > 0) {
+					try (PreparedStatement dropStmt = conn.prepareStatement(dropTableSql)) {
+						dropStmt.executeUpdate();
+						System.out.println("기존 USERS 테이블 삭제완료");
+					}
+				}
+			}
+
+			// 테이블 생성
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.executeUpdate();
+				System.out.println("USERS 테이블 생성 완료");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("테이블 생성 실패: " + e.getMessage());
+		}
 
 	}
+
+
 
 	// 해당 테이블이 없으면 생성하는 메서드 필요
 	private void createTableIfNotExists() throws SQLException {
+		String sql = "CREATE TABLE USERS (" + "USERNAME VARCHAR(50) NOT NULL PRIMARY KEY, "
+				+ "PASSWORD VARCHAR(255) NOT NULL, " + "DEPARTMENT VARCHAR(50), " + "POSITION VARCHAR(50), "
+				+ "EMAIL VARCHAR(100), " + "PHONE VARCHAR(15), " + "STATUS CHAR(1)" + ")";
+
+		String checkTableSql = "SELECT COUNT(*) FROM user_tables WHERE table_name = 'USERS'";
+
+		try (Connection conn = getConnection()) {
+			// 테이블 존재 여부 확인
+			try (PreparedStatement checkStmt = conn.prepareStatement(checkTableSql);
+					ResultSet rs = checkStmt.executeQuery()) {
+
+				rs.next();
+				// 테이블이 존재하지 않으면 생성
+				if (rs.getInt(1) == 0) {
+					try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+						pstmt.executeUpdate();
+						System.out.println("USERS 테이블 생성 완료");
+					}
+				} else {
+					System.out.println("USERS 테이블 이미 존재");
+				}
+			}
+
+		} catch (SQLException e) {
+			System.out.println("테이블 생성 실패: " + e.getMessage());
+		}
 	}
 	
+	// 연결 객체 가져오기
+		public static Connection getConnection() throws SQLException {
+			return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		}
+		
+		// 유저 정보 입력
+		public void insertUser(User user) {
+			PreparedStatement pstmt = null;
+			try {
+				// 유저 정보를 USERS 테이블에 삽입
+				String sql = "INSERT INTO USERS (USERNAME, PASSWORD, DEPARTMENT, POSITION, EMAIL, PHONE, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, user.getUsername());
+				pstmt.setString(2, user.getPassword());
+				pstmt.setString(3, user.getDepartment());
+				pstmt.setString(4, user.getPosition());
+				pstmt.setString(5, user.getEmail());
+				pstmt.setString(6, user.getPhone());
+				pstmt.setInt(7, user.getStatus()? 1:0); //boolean 값을 int로 변환하여 저장
+				
+				pstmt.executeUpdate();
+				System.out.println("유저 추가 완료");
+			} catch (SQLException e) {
+				System.out.println("유저 추가 실패: " + e.getMessage());
+			} finally {
+				close(conn, pstmt);
+			}
+		}
 
 
-	// 유저 정보 입력
-	public void insertUser(User user) {
+	// 회원가입 정보 입력
+	public void joinUser(User user) {
 		PreparedStatement pstmt = null;
 		try {
 			// 유저 정보를 USERS 테이블에 삽입
-			String sql = "INSERT INTO USERS(USERNAME, PASSWORD) VALUES(?, ?)";
+			String sql = "INSERT INTO USERS(USERNAME, PASSWORD,PHONE,DEPARTMENT) VALUES(?, ?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user.getUsername());
 			pstmt.setString(2, user.getPassword());
+			pstmt.setString(3, user.getPhone());
+			pstmt.setString(4, user.getDepartment());
 			pstmt.executeUpdate();
 			System.out.println("유저 회원가입 완료");
 		} catch (SQLException e) {
@@ -105,7 +194,7 @@ public class DBCon {
 		ResultSet rs = null; // 쿼리 실행 결과를 담는 객체이다.
 		try {
 			// 유저 이름을 기준으로 검색하는 SQL 쿼리
-			String sql = "SELECT USERNAME FROM USERS WHERE USERNAME = ?";
+			String sql = "SELECT * FROM USERS WHERE USERNAME = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, username); // 첫 번째 ?(실제값) 자리에 유저 이름 설정
 			System.out.println(pstmt);
@@ -127,5 +216,29 @@ public class DBCon {
 			e.printStackTrace();
 		}
 	}
+	
+	//삭제
+	public void deleteUser(String username) {
+		 PreparedStatement pstmt = null;
+	        try {
+	            String sql = "DELETE FROM USERS WHERE USERNAME = ?";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, username);
+	            int rowsAffected = pstmt.executeUpdate();
+	            
+	            if (rowsAffected > 0) {
+	                System.out.println("유저 삭제 완료: " + username);
+	            } else {
+	                System.out.println("유저가 존재하지 않거나 삭제되지 않았습니다: " + username);
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("유저 삭제 실패: " + e.getMessage());
+	        } finally {
+	            close(conn, pstmt);
+	        }
+	    }
+	
+		
+	}
 
-}
+

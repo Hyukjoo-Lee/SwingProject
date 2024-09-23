@@ -7,6 +7,10 @@ public class User {
 	private String username;
 	private String password;
 	private String department;
+	private String position;
+	private String email;
+	private String phone;
+	private boolean status; 
 
 	public User(String username, String password, String department) {
 		this.username = username;
@@ -14,11 +18,30 @@ public class User {
 		this.department = department;
 
 	}
+	public User(String username,String password, String phone, String department) {
+		this.username = username;
+		this.password = password;
+		this.phone = phone;
+		this.department = department;
+	
+
+	}
+	
 
 	public User(String username) {
 		this.username = username;
 	
 
+	}
+	public User(String username, String password, String department, String position, String email, String phone,
+			boolean status) {
+		this.username = username;
+		this.password = password;
+		this.department = department;
+		this.position = position;
+		this.email = email;
+		this.phone = phone;
+		this.status = status;
 	}
 	public String getUsername() {
 		return username;
@@ -43,5 +66,46 @@ public class User {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
+
+
+	public String getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	public boolean getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
 
 }

@@ -75,7 +75,7 @@ public class JoinPage extends JPanel {
 				
 				// 디비 연결 후 디비 INSERT
 				DBCon dbCon = new DBCon();
-				dbCon.insertUser(new User(name, password, department));
+				dbCon.joinUser(new User(name, password,phone,department));
 				JOptionPane.showMessageDialog(null, "회원가입 완료: " + name + "비번: " +password);
 				cardLayout.show(mainPanel, "로그인");
 			}
