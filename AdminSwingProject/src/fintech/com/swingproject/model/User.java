@@ -11,7 +11,7 @@ public class User {
 	private String email;
 	private String phone;
 	private String status; // boolean 으로 변환 예정: 체크박스로 표현 예정
-	
+
 //	 public User(String username, String password, String department, String position, String email, String phone, String status) {
 //		this.username = username;
 //		this.password = password;
@@ -34,6 +34,11 @@ public class User {
 		this.password = password;
 		this.phone = phone;
 		this.department = department;
+	}
+
+	public User(String username) {
+		this.username = username;
+
 	}
 
 	public String getUsername() {

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 
 import fintech.com.swingproject.model.User;
 
@@ -23,6 +23,10 @@ public class DBCon {
 
 	// 생성자
 	public DBCon() {
+		connectDB(URL, USERNAME, PASSWORD);
+	}
+
+	public void connectDB(String URL, String USERNAME, String PASSWORD) {
 		try {
 			// DriverManager 등록 - 오라클 드라이버 등록
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -136,6 +140,7 @@ public class DBCon {
 	public void insertUser(User user) {
 		PreparedStatement pstmt = null;
 		try {
+			connectDB(URL, USERNAME, PASSWORD);
 			// 유저 정보를 USERS 테이블에 삽입
 			String sql = "INSERT INTO USERS (USERNAME, PASSWORD, DEPARTMENT, POSITION, EMAIL, PHONE, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
@@ -151,13 +156,14 @@ public class DBCon {
 		} catch (SQLException e) {
 			System.out.println("유저 추가 실패: " + e.getMessage());
 		} finally {
-			close(conn, pstmt);
+			close(conn, pstmt); // 닫아 줌
 		}
 	}
 
 	public void joinUser(User user) {
 		PreparedStatement pstmt = null;
 		try {
+			connectDB(URL, USERNAME, PASSWORD);
 			// 유저 정보를 USERS 테이블에 삽입
 			String sql = "INSERT INTO USERS (USERNAME, PASSWORD, PHONE, DEPARTMENT) VALUES (?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
@@ -170,29 +176,64 @@ public class DBCon {
 		} catch (SQLException e) {
 			System.out.println("유저 회원가입 실패: " + e.getMessage());
 		} finally {
-			close(conn, pstmt);
+			close(conn, pstmt); // 닫아 줌
 		}
 	}
+
 	// 유저 정보를 삭제하는 메서드
-    public void deleteUser(String username) {
-        PreparedStatement pstmt = null;
-        try {
-            String sql = "DELETE FROM USERS WHERE USERNAME = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            int rowsAffected = pstmt.executeUpdate();
-            
-            if (rowsAffected > 0) {
-                System.out.println("유저 삭제 완료: " + username);
-            } else {
-                System.out.println("유저가 존재하지 않거나 삭제되지 않았습니다: " + username);
-            }
-        } catch (SQLException e) {
-            System.out.println("유저 삭제 실패: " + e.getMessage());
-        } finally {
-            close(conn, pstmt);
-        }
-    }
+	public void deleteUser(String username) {
+		PreparedStatement pstmt = null;
+		try {
+			connectDB(URL, USERNAME, PASSWORD);
+			String sql = "DELETE FROM USERS WHERE USERNAME = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, username);
+			int rowsAffected = pstmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				System.out.println("유저 삭제 완료: " + username);
+			} else {
+				System.out.println("유저가 존재하지 않거나 삭제되지 않았습니다: " + username);
+			}
+		} catch (SQLException e) {
+			System.out.println();
+			System.out.println("유저 삭제 실패: " + e.getMessage());
+		} finally {
+			close(conn, pstmt); // 닫아줌
+		}
+	}
+
+	// username을 기준으로 사용자 검색 메서드
+	// 유저 검색 메서드 (ResultSet을 반환)
+	// username을 기준으로 사용자 검색 메서드
+	// 리스트를 반환하는 메서드로 수정
+	public ArrayList<User> searchUser(String username) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<User> list = new ArrayList<>(); // 검색된 유저를 저장할 리스트
+		try {
+			connectDB(URL, USERNAME, PASSWORD);
+			// 유저 이름을 기준으로 검색하는 SQL 쿼리
+			String sql = "SELECT * FROM USERS WHERE USERNAME = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, username);
+			rs = pstmt.executeQuery();
+
+			// 검색된 데이터를 리스트에 저장
+			while (rs.next()) {
+				User user = new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("DEPARTMENT"),
+						rs.getString("POSITION"), rs.getString("EMAIL"), rs.getString("PHONE"), rs.getString("STATUS"));
+
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			System.err.println("유저 검색 실패:" + e.getMessage());
+			throw e;
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
 
 	// 연결 객체 가져오기
 	public static Connection getConnection() throws SQLException {
