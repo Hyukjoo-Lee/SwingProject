@@ -9,8 +9,6 @@ import fintech.com.swingproject.pages.JoinPage;
 import fintech.com.swingproject.pages.LoginPage;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * 초기세팅: 로그인 + 회원가입 + 조회페이지(CRUD)
@@ -35,7 +33,6 @@ public class MainPage {
 		EmployeeListPage listPage = new EmployeeListPage(cardLayout, mainPanel);
 		EmployeeAdd addPage = new EmployeeAdd(cardLayout, mainPanel);
 
-//		mainPanel.add(signUpPage, "회원가입");
 		mainPanel.add(loginPage, "로그인");
 		mainPanel.add(joinPage, "회원가입");
 		mainPanel.add(listPage, "조회");

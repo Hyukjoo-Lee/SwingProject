@@ -17,7 +17,8 @@ public class DBCon {
 	// DB 연결 객체
 	private Connection conn = null;
 
-	private static final String URL = "jdbc:oracle:thin:@192.168.41.67:1521:xe";
+//	private static final String URL = "jdbc:oracle:thin:@192.168.41.67:1521:xe";
+	private static final String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
 	private static final String USERNAME = "fin_team";
 	private static final String PASSWORD = "1234";
 
