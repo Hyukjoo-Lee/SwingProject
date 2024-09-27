@@ -10,7 +10,7 @@ public class User {
 	private String position;
 	private String email;
 	private String phone;
-	private String status; // boolean 으로 변환 예정: 체크박스로 표현 예정
+	private boolean status; // boolean 으로 변환 예정: 체크박스로 표현 예정
 
 //	 public User(String username, String password, String department, String position, String email, String phone, String status) {
 //		this.username = username;
@@ -19,7 +19,7 @@ public class User {
 //	}
 
 	public User(String username, String password, String department, String position, String email, String phone,
-			String status) {
+			boolean status) {
 		this.username = username;
 		this.password = password;
 		this.department = department;
@@ -89,11 +89,11 @@ public class User {
 		this.phone = phone;
 	}
 
-	public String getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

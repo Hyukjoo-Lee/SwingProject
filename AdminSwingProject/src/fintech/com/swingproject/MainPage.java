@@ -10,9 +10,6 @@ import fintech.com.swingproject.pages.LoginPage;
 
 import java.awt.*;
 
-/**
- * 초기세팅: 로그인 + 회원가입 + 조회페이지(CRUD)
- */
 public class MainPage {
 	public static void main(String[] args) {
 

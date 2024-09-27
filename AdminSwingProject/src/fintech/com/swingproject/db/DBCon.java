@@ -137,7 +137,7 @@ public class DBCon {
 		}
 	}
 
-	// 유저 정보 입력
+	// 유저 정보 입력 메서드
 	public void insertUser(User user) {
 		PreparedStatement pstmt = null;
 		try {
@@ -151,7 +151,7 @@ public class DBCon {
 			pstmt.setString(4, user.getPosition());
 			pstmt.setString(5, user.getEmail());
 			pstmt.setString(6, user.getPhone());
-			pstmt.setString(7, user.getStatus());
+			pstmt.setInt(7, user.getStatus() ? 1:0);
 			pstmt.executeUpdate();
 			System.out.println("유저 추가 완료");
 		} catch (SQLException e) {
@@ -160,7 +160,8 @@ public class DBCon {
 			close(conn, pstmt); // 닫아 줌
 		}
 	}
-
+	
+	// 유저 회원가입 메서드
 	public void joinUser(User user) {
 		PreparedStatement pstmt = null;
 		try {
@@ -203,11 +204,12 @@ public class DBCon {
 			close(conn, pstmt); // 닫아줌
 		}
 	}
-
-	// username을 기준으로 사용자 검색 메서드
-	// 유저 검색 메서드 (ResultSet을 반환)
-	// username을 기준으로 사용자 검색 메서드
-	// 리스트를 반환하는 메서드로 수정
+	
+	/**
+	 * 유저 정보 조회하는 메서드
+	 * 검색된 유저 리스트를 반환하는 메서드
+	 * 중복이 되지 않지만 나중에 추가 기능을 위한 ArrayList<User> 반환값 설정
+	 */
 	public ArrayList<User> searchUser(String username) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -223,7 +225,7 @@ public class DBCon {
 			// 검색된 데이터를 리스트에 저장
 			while (rs.next()) {
 				User user = new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("DEPARTMENT"),
-						rs.getString("POSITION"), rs.getString("EMAIL"), rs.getString("PHONE"), rs.getString("STATUS"));
+						rs.getString("POSITION"), rs.getString("EMAIL"), rs.getString("PHONE"), rs.getBoolean("STATUS"));
 
 				list.add(user);
 			}

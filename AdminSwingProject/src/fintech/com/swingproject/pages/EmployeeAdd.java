@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -18,7 +19,7 @@ public class EmployeeAdd extends JPanel {
 	private JTextField positionField;
 	private JTextField emailField;
 	private JTextField phoneField;
-	private JTextField statusField;
+	private JCheckBox statusCheckBox;
 
 	public EmployeeAdd(CardLayout cardLayout, JPanel mainJPanel) {
 		setLayout(new BorderLayout());
@@ -28,7 +29,6 @@ public class EmployeeAdd extends JPanel {
 
     private void initializeComponents(CardLayout cardLayout, JPanel mainJPanel) {
         add(createInputPanel(), BorderLayout.NORTH);
-      //add(createTablePanel(), BorderLayout.CENTER);
         add(createButtonPanel(cardLayout, mainJPanel), BorderLayout.SOUTH);
     }
     
@@ -43,7 +43,7 @@ public class EmployeeAdd extends JPanel {
 		positionField = new JTextField();
 		emailField = new JTextField();
 		phoneField = new JTextField();
-		statusField = new JTextField();
+		statusCheckBox = new JCheckBox();
 		
 		// 레이블과 입력 필드를 패널에 추가
 		inputPanel.add(new JLabel("이름 : "));
@@ -55,25 +55,14 @@ public class EmployeeAdd extends JPanel {
 		inputPanel.add(new JLabel("직급 : "));
 		inputPanel.add(positionField);
 		inputPanel.add(new JLabel("이메일 : "));
-//		inputPanel.add(new JLabel("이메일 : "));
 		inputPanel.add(emailField);
 		inputPanel.add(new JLabel("전화번호 : "));
 		inputPanel.add(phoneField);
 		inputPanel.add(new JLabel("상태 : "));
-		inputPanel.add(statusField);
+		inputPanel.add(statusCheckBox);
 
 		return inputPanel;
 	}
-	
-	/*
-	// 테이블을 포함하는 패널 생성
-	private JScrollPane createTablePanel() {
-		String[] columnNames = {"이름", "소속", "직급", "아이디", "이메일", "전화번호", "상태"};
-		model = new DefaultTableModel(columnNames, 0);
-		JTable table = new JTable(model);
-		return new JScrollPane(table);
-	}
-	*/
 
 	// 버튼을 포함하는 패널 생성
 	 private JPanel createButtonPanel(CardLayout cardLayout, JPanel mainJPanel) {
@@ -92,7 +81,7 @@ public class EmployeeAdd extends JPanel {
 				String position = positionField.getText();
 				String email = emailField.getText();
 				String phone = phoneField.getText();
-				String status = statusField.getText();
+				boolean status = statusCheckBox.isSelected();
 				
 				// 직원 정보를 EmployeeListPage에 추가
 				EmployeeListPage.addEmployee(name, password, department, position, email, phone, status);
@@ -121,6 +110,6 @@ public class EmployeeAdd extends JPanel {
 		passwordField.setText("");
 		emailField.setText("");
 		phoneField.setText("");
-		statusField.setText("");
+		statusCheckBox.setSelected(false);
 	}
 }
