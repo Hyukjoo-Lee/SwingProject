@@ -17,7 +17,10 @@ public class DBCon {
 	// DB 연결 객체
 	private Connection conn = null;
 
+	// 공유 데이터 베이스 서버 주소 
 //	private static final String URL = "jdbc:oracle:thin:@192.168.41.67:1521:xe";
+	
+	// 로컬 서버 주소
 	private static final String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
 	private static final String USERNAME = "fin_team";
 	private static final String PASSWORD = "1234";
@@ -241,5 +244,19 @@ public class DBCon {
 	// 연결 객체 가져오기
 	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+	}
+	
+	public static boolean validateUser(String username, String password) {
+		String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try (Connection conn = getConnection(); // DB 연결 메서드
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // 결과가 있으면 로그인 성공
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // 예외 발생 시 로그인 실패
+        }
 	}
 }
